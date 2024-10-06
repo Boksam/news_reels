@@ -12,3 +12,18 @@ datasource db {
   provider = "mysql"
   url      = env("DATABASE_URL")
 }
+
+model Article {
+  id               Int       @id @default(autoincrement())
+  headline         String?
+  content          String?   @db.LongText
+  full_summary     String?   @db.LongText
+  one_line_summary String?   @db.Text
+  section          String?
+  type             String?
+  thumbnail        String?
+  language         String?
+  url              String    @unique
+  created_at       DateTime? @default(now())
+  updated_at       DateTime? @default(now())
+}
