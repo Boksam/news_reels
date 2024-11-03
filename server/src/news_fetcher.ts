@@ -1,4 +1,4 @@
-import axios from 'axios'
+import got from 'got'
 import dayjs from 'dayjs'
 import { prisma } from '../prisma/prisma'
 import ArticleSummarizer from './article_summarizer'
@@ -26,8 +26,8 @@ export class NewsFetcher {
 
     const { today, yesterday } = this.getDateRange()
 
-    const response = await axios.get<GuardianResponse>(CONFIG.GUARDIAN_API_URL, {
-      params: {
+    const response = await got.get<GuardianResponse>(CONFIG.GUARDIAN_API_URL, {
+      searchParams: {
         'api-key': CONFIG.NEWS_API_KEY,
         'from-date': yesterday,
         'to-date': today,
@@ -35,9 +35,10 @@ export class NewsFetcher {
         section: 'world',
         'page-size': 5,
       },
+      responseType: 'json',
     })
 
-    return response.data.response.results
+    return response.body.response.results
   }
 
   private async processArticle(article: GuardianArticle) {
