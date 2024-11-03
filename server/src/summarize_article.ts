@@ -5,7 +5,7 @@ const openai = new OpenAI({
   organization: process.env.OPENAI_ORGANIZATION_ID,
 })
 
-const summarize_article = async (content: string) => {
+const summarizeArticle = async (content: string) => {
   const prompt = `
     Here is a full content of the article:
     "${content}"
@@ -18,8 +18,8 @@ const summarize_article = async (content: string) => {
 
     Return a JSON object like below:
     {
-      "one_line_summary": "...",
-      "full_summary": "..."
+      "oneLineSummary": "...",
+      "fullSummary": "..."
     }
   `
   try {
@@ -27,10 +27,10 @@ const summarize_article = async (content: string) => {
       model: 'gpt-3.5-turbo',
       messages: [{ role: 'system', content: prompt }],
     })
-    const summarized_message = response.choices[0].message?.content
-    if (summarized_message) {
-      console.log('summarized_message:', summarized_message)
-      const summary = JSON.parse(summarized_message)
+    const summarizedMessage = response.choices[0].message?.content
+    if (summarizedMessage) {
+      console.log('summarized_message:', summarizedMessage)
+      const summary = JSON.parse(summarizedMessage)
       return summary
     } else {
       throw new Error('Failed to summarize the article')
@@ -41,4 +41,4 @@ const summarize_article = async (content: string) => {
   }
 }
 
-export default summarize_article
+export default summarizeArticle

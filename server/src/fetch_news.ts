@@ -2,7 +2,7 @@ import axios from 'axios'
 import { PrismaClient } from '@prisma/client'
 import dayjs from 'dayjs'
 
-import summarize_article from './summarize_article'
+import summarizeArticle from './summarize_article'
 
 const prisma = new PrismaClient()
 
@@ -26,7 +26,8 @@ const fetch_news = async () => {
   }
 
   try {
-    const response = await axios.get(url, { params })
+    // TODO: add API response type
+    const response = await axios.get(url, { params }) // TODO: replace to got
     const articles = response.data.response.results
 
     for (const article of articles) {
@@ -48,7 +49,7 @@ const fetch_news = async () => {
         continue
       }
 
-      const summary = await summarize_article(content)
+      const summary = await summarizeArticle(content)
 
       await prisma.article.create({
         data: {
@@ -74,4 +75,4 @@ const fetch_news = async () => {
   }
 }
 
-export default fetch_news
+export { fetch_news }

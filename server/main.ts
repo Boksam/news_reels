@@ -2,7 +2,7 @@ import Express from 'express'
 import dotenv from 'dotenv'
 import cron from 'node-cron'
 
-import fetch_news from './src/fetch_news'
+import { fetch_news } from './src/fetch_news'
 
 dotenv.config()
 
