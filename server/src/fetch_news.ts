@@ -1,10 +1,8 @@
 import axios from 'axios'
-import { PrismaClient } from '@prisma/client'
+import { prisma } from '../prisma/prisma'
 import dayjs from 'dayjs'
 
 import summarizeArticle from './summarize_article'
-
-const prisma = new PrismaClient()
 
 const fetch_news = async () => {
   const api_key = process.env.NEWS_API_KEY
