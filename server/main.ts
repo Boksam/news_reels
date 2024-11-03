@@ -2,11 +2,12 @@ import Express from 'express'
 import dotenv from 'dotenv'
 import cron from 'node-cron'
 
-import { fetch_news } from './src/fetch_news'
+import { NewsFetcher } from './src/news_fetcher'
 
 dotenv.config()
 
 const app = Express()
+const newsFetcher = new NewsFetcher()
 
 app.get('/', (req, res) => {
   res.send('Hi mom')
@@ -14,10 +15,17 @@ app.get('/', (req, res) => {
 
 cron.schedule(
   '0 0 * * *',
-  () => {
-    fetch_news()
-      .then(() => console.log('News fetched successfully'))
-      .catch((error) => console.error('Failed to fetch news:', error))
+  async () => {
+    try {
+      await newsFetcher.fetchAndStore()
+      console.log(`News fetched and stored successfully at ${new Date().toISOString()}`)
+    } catch (error) {
+      if (error instanceof Error) {
+        console.error(`Failed to fetch and store news: ${error.message}`)
+      } else {
+        console.error(`Failed to fetch and store news: ${error}`)
+      }
+    }
   },
   { timezone: 'UTC' },
 )
