@@ -92,6 +92,3 @@ export class NewsFetcher {
     }
   }
 }
-
-const fetcher = new NewsFetcher()
-fetcher.fetchAndStore()

@@ -1,18 +1,24 @@
 import Express from 'express'
 import dotenv from 'dotenv'
 import cron from 'node-cron'
+import cors from 'cors'
 
-import { NewsFetcher } from './src/news_fetcher'
+import { NewsFetcher } from './src/article_fetcher'
+import articleRouter from './src/routes/article'
 
 dotenv.config()
 
 const app = Express()
+
+// Middleware
+app.use(Express.json())
+app.use(cors())
+
+// Router
+app.use('/api/articles', articleRouter)
+
+// Cron Job
 const newsFetcher = new NewsFetcher()
-
-app.get('/', (req, res) => {
-  res.send('Hi mom')
-})
-
 cron.schedule(
   '0 0 * * *',
   async () => {
