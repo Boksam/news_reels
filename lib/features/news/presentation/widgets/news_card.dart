@@ -1,16 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:news_reels/data/models/article.dart';
-import 'package:news_reels/features/articles/presentation/widgets/blurred_background_image.dart';
+import 'package:news_reels/features/news/presentation/widgets/blurred_background_image.dart';
 
 class NewsCard extends StatelessWidget {
   final Article article;
+  final VoidCallback onSwipeRight;
 
-  const NewsCard({Key? key, required this.article}) : super(key: key);
+  const NewsCard({Key? key, required this.article, required this.onSwipeRight})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onPanUpdate: (details) => {if (details.delta.dx > 0) {}},
+      onHorizontalDragEnd: (details) {
+        if (details.primaryVelocity! < 0) {
+          onSwipeRight();
+        }
+      },
       child: BlurredBackgroundImage(
           imageUrl: article.thumbnail ?? '',
           child: Positioned(
