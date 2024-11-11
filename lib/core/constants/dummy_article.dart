@@ -1,4 +1,4 @@
-import 'package:newwwwws/data/models/article.dart';
+import 'package:news_reels/data/models/article.dart';
 
 final dummyArticles = [
   Article(
