@@ -13,37 +13,42 @@ class NewsCard extends StatelessWidget {
       onPanUpdate: (details) => {if (details.delta.dx > 0) {}},
       child: BlurredBackgroundImage(
           imageUrl: article.thumbnail ?? '',
-          child: Padding(
-            padding: const EdgeInsets.all(10),
-            child: Column(
-              children: [
-                Text(
-                  article.headline ?? 'Empty headline',
-                  style: const TextStyle(
-                    fontSize: 24,
-                    fontWeight: FontWeight.w300,
-                    color: Colors.white,
-                    decoration: TextDecoration.none,
-                  ),
+          child: Positioned(
+              top: MediaQuery.of(context).size.height * 0.66,
+              left: 0,
+              right: 0,
+              child: Padding(
+                padding: const EdgeInsets.all(10),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    Text(
+                      article.headline ?? 'Empty headline',
+                      style: const TextStyle(
+                        fontSize: 24,
+                        fontWeight: FontWeight.w400,
+                        color: Colors.white,
+                        decoration: TextDecoration.none,
+                      ),
+                    ),
+                    const Divider(
+                      color: Colors.grey,
+                      thickness: 0.5,
+                      height: 32,
+                    ),
+                    Text(
+                      article.oneLineSummary ?? 'Empty one line summary',
+                      style: const TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.w200,
+                        color: Colors.white,
+                        decoration: TextDecoration.none,
+                      ),
+                    ),
+                    const SizedBox(height: 16)
+                  ],
                 ),
-                const Divider(
-                  color: Colors.grey,
-                  thickness: 0.5,
-                  height: 32,
-                ),
-                Text(
-                  article.oneLineSummary ?? 'Empty one line summary',
-                  style: const TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.w200,
-                    color: Colors.white,
-                    decoration: TextDecoration.none,
-                  ),
-                ),
-                const SizedBox(height: 16)
-              ],
-            ),
-          )),
+              ))),
     );
   }
 }

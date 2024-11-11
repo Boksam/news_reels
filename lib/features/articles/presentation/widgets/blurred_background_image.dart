@@ -29,23 +29,30 @@ class BlurredBackgroundImage extends StatelessWidget {
               ),
             )),
         Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            ColorFiltered(
-              colorFilter: ColorFilter.mode(
-                Colors.black.withOpacity(0.1),
-                BlendMode.darken,
-              ),
-              child: Center(
-                child: Image.network(
-                  imageUrl,
-                  fit: BoxFit.cover,
+            Expanded(
+              flex: 4,
+              child: ColorFiltered(
+                colorFilter: ColorFilter.mode(
+                  Colors.black.withOpacity(0.4),
+                  BlendMode.darken,
                 ),
+                child: Align(
+                    alignment: Alignment.bottomCenter,
+                    child: Image.network(
+                      imageUrl,
+                      fit: BoxFit.fitWidth,
+                    )),
               ),
             ),
-            const SizedBox(height: 32),
-            child,
+            const Expanded(
+              flex: 1,
+              child: SizedBox(),
+            ),
+            Expanded(
+              flex: 3,
+              child: child,
+            )
           ],
         )
       ],
