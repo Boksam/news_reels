@@ -19,6 +19,7 @@ class NewsScreenState extends ConsumerState<NewsScreen> {
       body: PageView.builder(
         controller: _pageController,
         scrollDirection: Axis.vertical,
+        itemCount: dummyArticles.length,
         itemBuilder: (context, index) {
           return NewsCard(
             article: dummyArticles[index],
