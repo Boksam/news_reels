@@ -31,7 +31,10 @@ class NewsCard extends StatelessWidget {
             ColorFiltered(
               colorFilter: ColorFilter.mode(
                   Colors.black.withOpacity(0.1), BlendMode.darken),
-              child: Image.network(article.thumbnail ?? ''),
+              child: Image.network(
+                article.thumbnail ?? '',
+                fit: BoxFit.cover,
+              ),
             ),
             Padding(
               padding: const EdgeInsets.all(10),
@@ -39,7 +42,7 @@ class NewsCard extends StatelessWidget {
                 children: [
                   Text(
                     article.headline ?? 'Empty headline',
-                    style: NewsTextStyles.headline.copyWith(fontSize: 20),
+                    style: NewsTextStyles.headline,
                   ),
                   const Divider(
                     color: Colors.grey,

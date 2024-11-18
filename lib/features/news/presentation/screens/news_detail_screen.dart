@@ -33,7 +33,7 @@ class NewsDetailScreen extends StatelessWidget {
                   ),
                   Text(
                     article.content ?? 'Empty full summary',
-                    style: NewsTextStyles.body,
+                    style: NewsTextStyles.detailBody,
                   ),
                 ],
               ),
