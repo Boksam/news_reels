@@ -21,31 +21,58 @@ class NewsCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final screenHeight = MediaQuery.of(context).size.height;
+    final screenWidth = MediaQuery.of(context).size.width;
+
     return SwipeDetector(
       onSwipeLeft: () => _navigateToDetail(context),
       child: BlurredBackground(
         imageUrl: article.thumbnail ?? '',
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
-            ColorFiltered(
-              colorFilter: ColorFilter.mode(
-                  Colors.black.withOpacity(0.1), BlendMode.darken),
-              child: Image.network(
-                article.thumbnail ?? '',
-                fit: BoxFit.cover,
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(10),
+            SizedBox(height: MediaQuery.of(context).size.height * 0.08),
+            LayoutBuilder(builder: (context, constraints) {
+              return Container(
+                constraints: BoxConstraints(
+                  maxHeight: screenHeight * 0.5,
+                  maxWidth: screenWidth,
+                ),
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(12),
+                  child: Image.network(
+                    article.thumbnail ?? '',
+                    fit: BoxFit.cover,
+                  ),
+                ),
+              );
+            }),
+            Expanded(
+                child: Padding(
+              padding: const EdgeInsets.fromLTRB(16, 20, 16, 16),
               child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
+                  SizedBox(
+                    height: screenHeight * 0.015,
+                  ),
+                  Wrap(
+                    spacing: 8,
+                    children: [
+                      if (article.section?.isNotEmpty == true)
+                        _buildTag(article.section),
+                      if (article.type?.isNotEmpty == true)
+                        _buildTag(article.type),
+                    ],
+                  ),
+                  SizedBox(
+                    height: screenHeight * 0.01,
+                  ),
                   Text(
                     article.headline ?? 'Empty headline',
                     style: NewsTextStyles.headline,
                   ),
-                  const Divider(
-                    color: Colors.grey,
+                  Divider(
+                    color: Colors.white.withOpacity(0.5),
                     thickness: 0.5,
                     height: 32,
                   ),
@@ -55,9 +82,23 @@ class NewsCard extends StatelessWidget {
                   ),
                 ],
               ),
-            )
+            ))
           ],
         ),
+      ),
+    );
+  }
+
+  Widget _buildTag(tagName) {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(20),
+        border: Border.all(color: Colors.white.withOpacity(0.15)),
+      ),
+      child: Text(
+        tagName ?? '',
+        style: NewsTextStyles.tag,
       ),
     );
   }

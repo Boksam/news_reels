@@ -31,4 +31,12 @@ class NewsTextStyles {
     letterSpacing: 0.5,
     wordSpacing: 1,
   );
+
+  static final TextStyle tag = GoogleFonts.merriweatherSans(
+    fontSize: 14,
+    fontWeight: FontWeight.w300,
+    color: Colors.white,
+    decoration: TextDecoration.none,
+    letterSpacing: 0.5,
+  );
 }
