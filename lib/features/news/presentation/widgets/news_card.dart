@@ -25,32 +25,35 @@ class NewsCard extends StatelessWidget {
       onSwipeLeft: () => _navigateToDetail(context),
       child: BlurredBackground(
         imageUrl: article.thumbnail ?? '',
-        child: Padding(
-          padding: EdgeInsets.only(
-            top: MediaQuery.of(context).size.height * 0.66,
-            left: 10,
-            right: 10,
-            bottom: 10,
-          ),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              Text(
-                article.headline ?? 'Empty headline',
-                style: NewsTextStyles.headline.copyWith(fontSize: 20),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            ColorFiltered(
+              colorFilter: ColorFilter.mode(
+                  Colors.black.withOpacity(0.1), BlendMode.darken),
+              child: Image.network(article.thumbnail ?? ''),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(10),
+              child: Column(
+                children: [
+                  Text(
+                    article.headline ?? 'Empty headline',
+                    style: NewsTextStyles.headline.copyWith(fontSize: 20),
+                  ),
+                  const Divider(
+                    color: Colors.grey,
+                    thickness: 0.5,
+                    height: 32,
+                  ),
+                  Text(
+                    article.oneLineSummary ?? 'Empty one line summary',
+                    style: NewsTextStyles.body,
+                  ),
+                ],
               ),
-              const Divider(
-                color: Colors.grey,
-                thickness: 0.5,
-                height: 32,
-              ),
-              Text(
-                article.oneLineSummary ?? 'Empty one line summary',
-                style: NewsTextStyles.body,
-              ),
-              const SizedBox(height: 16),
-            ],
-          ),
+            )
+          ],
         ),
       ),
     );
