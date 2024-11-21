@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class NewsTextStyles {
-  static final TextStyle headline = GoogleFonts.merriweather(
+  static final TextStyle headline = GoogleFonts.montserrat(
     fontSize: 24,
     height: 1.5,
     fontWeight: FontWeight.w500,
@@ -12,7 +12,7 @@ class NewsTextStyles {
     wordSpacing: 0.5,
   );
 
-  static final TextStyle body = GoogleFonts.merriweatherSans(
+  static final TextStyle body = GoogleFonts.inter(
     fontSize: 16,
     height: 1.5,
     fontWeight: FontWeight.w300,
@@ -22,7 +22,7 @@ class NewsTextStyles {
     wordSpacing: 1,
   );
 
-  static final TextStyle detailBody = GoogleFonts.merriweatherSans(
+  static final TextStyle detailBody = GoogleFonts.inter(
     fontSize: 16,
     height: 2,
     fontWeight: FontWeight.w300,
@@ -32,7 +32,7 @@ class NewsTextStyles {
     wordSpacing: 1,
   );
 
-  static final TextStyle tag = GoogleFonts.merriweatherSans(
+  static final TextStyle tag = GoogleFonts.inter(
     fontSize: 14,
     fontWeight: FontWeight.w300,
     color: Colors.white,
