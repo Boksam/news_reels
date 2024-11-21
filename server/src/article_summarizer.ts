@@ -21,21 +21,21 @@ export class ArticleSummarizer {
   }
 
   private createPrompt(content: string) {
+    // Escape content to avoid JSON parsing issues
+    const escapedContent = content.replace(/\\/g, '\\\\').replace(/"/g, '\\"')
+
     return `
-      Here is a full content of the article:
-      "${content}"
+      Please analyze the following article content and provide two summaries:
+        1. A detailed summary (around 500 characters)
+        2. A one-line summary
 
-      Please provide
-      1. Fully summarized content of the article. (around 500 characters)
-        Full summary should be detailed and informative.
-      2. One line summary of the article.
+      Article content: ${escapedContent}
 
-      Return a JSON object like below:
+      Respond in the following JSON format, being careful to escape any quotes in the summaries:
       {
-        "oneLineSummary": "...",
-        "fullSummary": "..."
-      }
-    `
+        "oneLineSummary": "your one line summary here",
+        "fullSummary": "your detailed summary here"
+      }`
   }
 
   async summarize(content: string): Promise<ArticleSummary> {
