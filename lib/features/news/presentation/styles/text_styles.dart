@@ -34,7 +34,7 @@ class NewsTextStyles {
 
   static final TextStyle tag = GoogleFonts.inter(
     fontSize: 14,
-    fontWeight: FontWeight.w300,
+    fontWeight: FontWeight.w400,
     color: Colors.white,
     decoration: TextDecoration.none,
     letterSpacing: 0.5,

@@ -1,4 +1,5 @@
 import 'package:news_reels/data/models/article.dart';
+import 'package:news_reels/utils/helpers/url_helper.dart';
 
 final dummyArticles = [
   Article(
@@ -13,10 +14,8 @@ final dummyArticles = [
         '''Spain deploys 10,000 troops and police officers to assist with aftermath of deadly floods that claimed at least 211 lives.''',
     section: 'world',
     type: 'article',
-    thumbnail:
-        'https://media.guim.co.uk/2f57d21c7c5b3b77fa5956e7a500ce5521eefc01/0_182_5472_3283/500.jpg',
-    // 'https://ss7.vzw.com/is/image/VerizonWireless/apple-iphone-16-plus-teal?\$device-lg\$',
-    // 'https://i.guim.co.uk/img/media/6e2d82b53f340258c6140290214441a67de5047f/0_60_4200_2520/master/4200.jpg?width=620&dpr=2&s=none&crop=none',
+    thumbnail: getOriginalImageFromUrl(
+        'https://media.guim.co.uk/2f57d21c7c5b3b77fa5956e7a500ce5521eefc01/0_182_5472_3283/500.jpg'),
     language: 'en',
     url:
         'https://www.theguardian.com/world/2024/nov/02/spain-floods-disaster-5000-more-troops-drafted-in-to-deal-with-aftermath',
