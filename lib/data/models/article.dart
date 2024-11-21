@@ -43,4 +43,19 @@ class Article {
         updatedAt:
             json['updated_at'] ? DateTime.parse(json['updated_at']) : null,
       );
+
+  Map<String, Object?> toMap() => {
+        'id': id,
+        'headline': headline,
+        'content': content,
+        'full_summary': fullSummary,
+        'one_line_summary': oneLineSummary,
+        'section': section,
+        'type': type,
+        'thumbnail': thumbnail,
+        'language': language,
+        'url': url,
+        'created_at': createdAt,
+        'updated_at': updatedAt,
+      };
 }
