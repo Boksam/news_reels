@@ -43,6 +43,7 @@ export class ArticleSummarizer {
       const response = await this.openai.chat.completions.create({
         model: CONFIG.GPT_MODEL,
         messages: [{ role: 'system', content: this.createPrompt(content) }],
+        response_format: { type: 'json_object' },
       })
       const summarizedMessage = response.choices[0].message?.content
       if (!summarizedMessage) {
