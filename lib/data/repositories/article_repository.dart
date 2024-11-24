@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:flutter/foundation.dart';
 import 'package:news_reels/core/config/api_config.dart';
 import 'package:news_reels/core/service/api_service.dart';
 import 'package:news_reels/data/models/article.dart';
@@ -19,18 +20,17 @@ class ArticleRepository {
     return _database!;
   }
 
+  /// Initiates database.
+  ///
+  /// It will create essential tables like articles.
+  /// This should be fixed if the model changes.
   Future<Database> initDB() async {
-    /// Initiates database.
-    ///
-    /// It will create essential tables like articles.
-    /// This should be fixed if the model changes.
     return await openDatabase(
       join(await getDatabasesPath(), 'articles.db'),
       version: 1,
-      onCreate: (db, version) async => {
+      onCreate: (db, version) async {
         await db.execute('''
           CREATE TABLE articles(
-            CREATE TABLE articles(
             id INTEGER PRIMARY KEY,
             headline TEXT,
             content TEXT,
@@ -44,22 +44,26 @@ class ArticleRepository {
             created_at TEXT,
             updated_at TEXT
           )
-          ''')
+        ''');
       },
     );
   }
 
+  /// Fetches and Stores today's articles.
   Future<void> fetchAndStoreArticlesByDate(DateTime date) async {
-    /// Fetches and Stores today's articles.
-    String formattedDate = date.toIso8601String().split('T')[0];
+    debugPrint("fetch and store Articles of $date");
 
+    String formattedDate = date.toIso8601String().split('T')[0];
     try {
       final response = await _apiService
           .get(ApiEndPoints.articles(date), {'date': formattedDate});
 
       if (response.statusCode == 200) {
-        final List<dynamic> articlesJson = json.decode(response.body);
+        final List<dynamic> articlesJson =
+            json.decode(response.body)['articles'];
         final db = await database;
+
+        debugPrint("Got articlesJson, length: ${articlesJson.length}");
 
         await db.transaction((txn) async {
           txn.delete(
@@ -67,6 +71,7 @@ class ArticleRepository {
             where: 'DATE(created_at) = ?',
             whereArgs: [formattedDate],
           );
+          debugPrint("Deleted today's article");
 
           for (var articleJson in articlesJson) {
             Article article = Article.fromJson(articleJson);
@@ -76,7 +81,7 @@ class ArticleRepository {
         });
       } else {
         throw Exception(
-            'Failed to fetch and store articles: ${response.statusCode}');
+            'Request failed with Status Code ${response.statusCode}');
       }
     } catch (e) {
       throw Exception('Failed to fetch articles: $e');
@@ -84,6 +89,8 @@ class ArticleRepository {
   }
 
   Future<void> deleteOldArticles(DateTime date, {int period = 7}) async {
+    debugPrint("Delete articles older than $period days");
+
     final DateTime endDate = date.subtract(Duration(days: period));
     final String formattedEndDate = endDate.toIso8601String().split('T')[0];
 

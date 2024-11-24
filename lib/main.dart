@@ -1,7 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:news_reels/core/service/article_sync_service.dart';
 import 'package:news_reels/features/news/presentation/screens/news_screen.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
+  final today = DateTime.now();
+  final ArticleSyncService articleSyncService = ArticleSyncService(null);
+  await articleSyncService.syncArticle(today);
   runApp(const MyApp());
 }
 
