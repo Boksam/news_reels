@@ -28,21 +28,22 @@ class Article {
   });
 
   factory Article.fromJson(Map<String, dynamic> json) => Article(
-        id: json['id'],
-        headline: json['headline'],
-        content: json['content'],
-        fullSummary: json['full_summary'],
-        oneLineSummary: json['one_line_summary'],
-        section: json['section'],
-        type: json['type'],
-        thumbnail: json['thumbnail'],
-        language: json['language'],
-        url: json['url'],
-        createdAt:
-            json['created_at'] ? DateTime.parse(json['created_at']) : null,
-        updatedAt:
-            json['updated_at'] ? DateTime.parse(json['updated_at']) : null,
-      );
+      id: json['id'],
+      headline: json['headline'],
+      content: json['content'],
+      fullSummary: json['full_summary'],
+      oneLineSummary: json['one_line_summary'],
+      section: json['section'],
+      type: json['type'],
+      thumbnail: json['thumbnail'],
+      language: json['language'],
+      url: json['url'],
+      createdAt: json['created_at'] != null
+          ? DateTime.parse(json['created_at'])
+          : null,
+      updatedAt: json['updated_at'] != null
+          ? DateTime.parse(json['updated_at'])
+          : null);
 
   Map<String, Object?> toMap() => {
         'id': id,
@@ -55,7 +56,7 @@ class Article {
         'thumbnail': thumbnail,
         'language': language,
         'url': url,
-        'created_at': createdAt,
-        'updated_at': updatedAt,
+        'created_at': createdAt?.toIso8601String(),
+        'updated_at': updatedAt?.toIso8601String(),
       };
 }
