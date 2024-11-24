@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:news_reels/data/models/article.dart';
 import 'package:news_reels/features/news/presentation/screens/news_detail_screen.dart';
 import 'package:news_reels/features/news/presentation/styles/text_styles.dart';
-import 'package:news_reels/features/news/presentation/widgets/blurred_background_image.dart';
 import 'package:news_reels/features/news/presentation/widgets/swipe_detector.dart';
 
 class NewsCard extends StatelessWidget {
