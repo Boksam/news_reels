@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:news_reels/core/service/article_sync_service.dart';
 import 'package:news_reels/features/news/presentation/screens/news_screen.dart';
 
@@ -8,7 +9,7 @@ void main() async {
   final today = DateTime.now();
   final ArticleSyncService articleSyncService = ArticleSyncService(null);
   await articleSyncService.syncArticle(today);
-  runApp(const MyApp());
+  runApp(const ProviderScope(child: MyApp()));
 }
 
 class MyApp extends StatelessWidget {
