@@ -107,4 +107,21 @@ class ArticleRepository {
       throw Exception("Failed to delete old articles: $e");
     }
   }
+
+  Future<List<Article>?> getArticlesByDate(DateTime date) async {
+    final db = await database;
+    final String formattedDate = date.toIso8601String().split('T')[0];
+
+    final List<Map<String, dynamic>> articlesJson = await db.query('articles',
+        where: 'DATE(created_at) = ?', whereArgs: [formattedDate]);
+
+    final List<Article> todayArticles = [];
+    for (var articleJson in articlesJson) {
+      todayArticles.add(Article.fromJson(articleJson));
+    }
+    if (todayArticles.isEmpty) {
+      debugPrint("Today's article doesn't exist.");
+    }
+    return todayArticles;
+  }
 }
