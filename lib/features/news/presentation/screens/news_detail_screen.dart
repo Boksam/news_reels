@@ -32,7 +32,7 @@ class NewsDetailScreen extends StatelessWidget {
                     height: 32,
                   ),
                   Text(
-                    article.content ?? 'Empty full summary',
+                    article.fullSummary ?? 'Empty full summary',
                     style: NewsTextStyles.detailBody,
                   ),
                 ],
