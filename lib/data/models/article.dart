@@ -1,3 +1,5 @@
+import 'package:news_reels/utils/helpers/url_helper.dart';
+
 class Article {
   final int id;
   final String? headline;
@@ -35,7 +37,7 @@ class Article {
       oneLineSummary: json['one_line_summary'],
       section: json['section'],
       type: json['type'],
-      thumbnail: json['thumbnail'],
+      thumbnail: getOriginalImageFromUrl(json['thumbnail']),
       language: json['language'],
       url: json['url'],
       createdAt: json['created_at'] != null
