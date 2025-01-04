@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:news_reels/core/config/api_config.dart';
+import 'package:news_reels/config/api_config.dart';
 import 'package:http/http.dart' as http;
 
 /// This service is to help sending API requests.

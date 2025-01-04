@@ -1,4 +1,4 @@
-import 'package:news_reels/data/repositories/article_repository.dart';
+import 'package:news_reels/repositories/article_repository.dart';
 
 class ArticleSyncService {
   final ArticleRepository _articleRepository;

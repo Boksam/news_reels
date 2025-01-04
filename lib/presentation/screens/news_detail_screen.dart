@@ -1,9 +1,9 @@
 // news_detail_screen.dart
 import 'package:flutter/material.dart';
-import 'package:news_reels/data/models/article.dart';
-import 'package:news_reels/features/news/presentation/styles/text_styles.dart';
-import 'package:news_reels/features/news/presentation/widgets/blurred_background_image.dart';
-import 'package:news_reels/features/news/presentation/widgets/swipe_detector.dart';
+import 'package:news_reels/models/article.dart';
+import 'package:news_reels/presentation/styles/text_styles.dart';
+import 'package:news_reels/presentation/widgets/blurred_background_image.dart';
+import 'package:news_reels/presentation/widgets/swipe_detector.dart';
 
 class NewsDetailScreen extends StatelessWidget {
   final Article article;

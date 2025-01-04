@@ -1,9 +1,9 @@
 import 'dart:convert';
 
 import 'package:flutter/foundation.dart';
-import 'package:news_reels/core/config/api_config.dart';
-import 'package:news_reels/core/service/api_service.dart';
-import 'package:news_reels/data/models/article.dart';
+import 'package:news_reels/config/api_config.dart';
+import 'package:news_reels/service/api_service.dart';
+import 'package:news_reels/models/article.dart';
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 

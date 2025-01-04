@@ -1,5 +1,5 @@
-import 'package:news_reels/data/models/article.dart';
-import 'package:news_reels/utils/helpers/url_helper.dart';
+import 'package:news_reels/models/article.dart';
+import 'package:news_reels/utils/url_helper.dart';
 
 final dummyArticles = [
   Article(

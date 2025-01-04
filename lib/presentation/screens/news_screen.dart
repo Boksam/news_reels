@@ -2,8 +2,8 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:news_reels/features/news/presentation/widgets/news_card.dart';
-import 'package:news_reels/features/news/providers/articles_provider.dart';
+import 'package:news_reels/presentation/widgets/news_card.dart';
+import 'package:news_reels/providers/articles_provider.dart';
 
 class NewsScreen extends ConsumerStatefulWidget {
   const NewsScreen({Key? key}) : super(key: key);
