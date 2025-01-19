@@ -42,7 +42,6 @@ String getOriginalImageFromUrl(String url, {int width = 1900, int dpr = 1}) {
       's': 'none',
       'crop': 'none',
     }).toString();
-    debugPrint("Converted image url: $url -> $newUrl");
     return newUrl;
   } catch (e) {
     debugPrint("Error converting Guardian URL: $e");

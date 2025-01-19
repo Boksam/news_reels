@@ -1,14 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:news_reels/service/article_sync_service.dart';
 import 'package:news_reels/presentation/screens/news_screen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  final today = DateTime.now();
-  final ArticleSyncService articleSyncService = ArticleSyncService(null);
-  await articleSyncService.syncArticle(today);
   runApp(const ProviderScope(child: MyApp()));
 }
 

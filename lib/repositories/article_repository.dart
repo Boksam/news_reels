@@ -49,63 +49,44 @@ class ArticleRepository {
     );
   }
 
-  /// Fetches and Stores today's articles.
-  Future<void> fetchAndStoreArticlesByDate(DateTime date) async {
-    debugPrint("fetch and store Articles of $date");
+  Future<void> deleteArticlesBeforeDate(DateTime date) async {
+    final db = await database;
+    final formattedDate = date.toIso8601String().split('T')[0];
 
-    String formattedDate = date.toIso8601String().split('T')[0];
-    try {
-      final response = await _apiService
-          .get(ApiEndPoints.articles(date), {'date': formattedDate});
-
-      if (response.statusCode == 200) {
-        final List<dynamic> articlesJson =
-            json.decode(response.body)['articles'];
-        final db = await database;
-
-        debugPrint("Got articlesJson, length: ${articlesJson.length}");
-
-        await db.transaction((txn) async {
-          txn.delete(
-            'articles',
-            where: 'DATE(created_at) = ?',
-            whereArgs: [formattedDate],
-          );
-          debugPrint("Deleted today's article");
-
-          for (var articleJson in articlesJson) {
-            Article article = Article.fromJson(articleJson);
-            txn.insert('articles', article.toMap(),
-                conflictAlgorithm: ConflictAlgorithm.replace);
-          }
-        });
-      } else {
-        throw Exception(
-            'Request failed with Status Code ${response.statusCode}');
-      }
-    } catch (e) {
-      throw Exception('Failed to fetch articles: $e');
-    }
+    db.delete('articles',
+        where: 'DATE(created_at) < ?', whereArgs: [formattedDate]);
   }
 
-  Future<void> deleteOldArticles(DateTime date, {int period = 7}) async {
-    debugPrint("Delete articles older than $period days");
+  Future<void> fetchAndStoreArticlesByDate(DateTime date) async {
+    final String formattedDate = date.toIso8601String().split('T')[0];
+    final response = await _apiService
+        .get(ApiEndPoints.articles(date), {'date': formattedDate});
 
-    final DateTime endDate = date.subtract(Duration(days: period));
-    final String formattedEndDate = endDate.toIso8601String().split('T')[0];
-
-    try {
-      final db = await database;
-      db.transaction((txn) async {
-        txn.delete(
-          'articles',
-          where: 'DATE(created_at) < ?',
-          whereArgs: [formattedEndDate],
-        );
-      });
-    } catch (e) {
-      throw Exception("Failed to delete old articles: $e");
+    if (response.statusCode != 200) {
+      throw Exception('Request failed with status code ${response.statusCode}');
     }
+
+    final List<dynamic> articlesJson = json.decode(response.body)['articles'];
+
+    final List<Article> articles =
+        articlesJson.map((json) => Article.fromJson(json)).toList();
+
+    final db = await database;
+    for (Article article in articles) {
+      db.insert('articles', article.toMap(),
+          conflictAlgorithm: ConflictAlgorithm.replace);
+    }
+    debugPrint('Added ${articles.length} articles');
+  }
+
+  Future<void> syncArticlesByDate(DateTime date) async {
+    debugPrint('Start sync articles. date: $date');
+
+    // Delete articles older than `date`.
+    deleteArticlesBeforeDate(date);
+
+    // Fetch articles created in `date`.
+    fetchAndStoreArticlesByDate(date);
   }
 
   Future<List<Article>?> getArticlesByDate(DateTime date) async {
@@ -115,13 +96,13 @@ class ArticleRepository {
     final List<Map<String, dynamic>> articlesJson = await db.query('articles',
         where: 'DATE(created_at) = ?', whereArgs: [formattedDate]);
 
-    final List<Article> todayArticles = [];
-    for (var articleJson in articlesJson) {
-      todayArticles.add(Article.fromJson(articleJson));
+    final List<Article> articles =
+        articlesJson.map((json) => Article.fromJson(json)).toList();
+
+    if (articles.isEmpty) {
+      debugPrint('Article doesn\'t exist for $date');
     }
-    if (todayArticles.isEmpty) {
-      debugPrint("Today's article doesn't exist.");
-    }
-    return todayArticles;
+
+    return articles;
   }
 }

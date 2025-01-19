@@ -30,7 +30,7 @@ class NewsScreenState extends ConsumerState<NewsScreen> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                const Text('Failed to load articles'),
+                Text('Failed to load articles: $error'),
                 const SizedBox(height: 8),
                 ElevatedButton(
                   onPressed: () => ref.refresh(articlesProvider),
