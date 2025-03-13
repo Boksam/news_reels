@@ -10,7 +10,7 @@ final articlesProvider =
     FutureProvider.autoDispose<List<Article>?>((ref) async {
   final repository = ref.watch(articleRepositoryProvider);
 
-  final DateTime today = DateTime.now();
+  final DateTime today = DateTime.now().toUtc();
 
   repository.syncArticlesByDate(today);
 
