@@ -2,8 +2,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:news_reels/models/article.dart';
 import 'package:news_reels/repositories/article_repository.dart';
 
-const updateGap = Duration(days: 1);
-
 final articleRepositoryProvider = Provider<ArticleRepository>((ref) {
   return ArticleRepository(null);
 });
