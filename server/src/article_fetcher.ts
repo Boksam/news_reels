@@ -1,5 +1,6 @@
 import got from 'got'
 import dayjs from 'dayjs'
+import utc from 'dayjs/plugin/utc'
 import { prisma } from '../prisma/prisma'
 import ArticleSummarizer from './article_summarizer'
 import { CONFIG } from './config'
@@ -12,19 +13,16 @@ export class NewsFetcher {
     this.summarizer = new ArticleSummarizer()
   }
 
-  private getDateRange() {
-    return {
-      today: dayjs().format('YYYY-MM-DD'),
-      yesterday: dayjs().subtract(1, 'day').format('YYYY-MM-DD'),
-    }
-  }
-
   private async fetchArticles(): Promise<GuardianArticle[]> {
     if (!CONFIG.NEWS_API_KEY) {
       throw new Error('Guardian API key not found')
     }
 
-    const { today, yesterday } = this.getDateRange()
+    // Get UTC time using utc plugin
+    dayjs.extend(utc)
+
+    const today = dayjs.utc().format('YYYY-MM-DD')
+    const yesterday = dayjs.utc().subtract(1, 'day').format('YYYY-MM-DD')
 
     const response = await got.get<GuardianResponse>(CONFIG.GUARDIAN_API_URL, {
       searchParams: {
