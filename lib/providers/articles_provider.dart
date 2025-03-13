@@ -2,6 +2,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:news_reels/models/article.dart';
 import 'package:news_reels/repositories/article_repository.dart';
 
+const updateGap = Duration(days: 1);
+
 final articleRepositoryProvider = Provider<ArticleRepository>((ref) {
   return ArticleRepository(null);
 });
@@ -10,9 +12,9 @@ final articlesProvider =
     FutureProvider.autoDispose<List<Article>?>((ref) async {
   final repository = ref.watch(articleRepositoryProvider);
 
-  final DateTime today = DateTime.now().toUtc();
+  repository.deleteArticles();
 
-  repository.syncArticlesByDate(today);
+  repository.fetchAndStoreArticles();
 
-  return repository.getArticlesByDate(today);
+  return repository.getArticles();
 });

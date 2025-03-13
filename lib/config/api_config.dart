@@ -9,6 +9,6 @@ class ApiConfig {
 
 /// Configures Api endpoints.
 class ApiEndPoints {
-  static String articles(DateTime date) => '/api/articles';
+  static String articles() => '/api/articles';
   static String articlesById(int id) => '/api/articles/$id';
 }

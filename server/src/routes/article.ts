@@ -1,76 +1,74 @@
-import { query, Router } from 'express'
+import { Router } from 'express'
 import { prisma } from '../../prisma/prisma'
+import dayjs from 'dayjs'
+import utc from 'dayjs/plugin/utc'
 
 const router = Router()
 
+dayjs.extend(utc)
+
+const DEFAULT_LIMIT = 20 // 20 rows
+const DEFAULT_TIMEFRAME = 24 // 24 hours
+
+/**
+ * News API
+ * @route GET /api/news
+ * @param {number} limit - Maximum number of articles
+ * @param {number} timeframe - How many hours of news to retrieve (Default: 24)
+ * @returns {Object} JSON object with articles array and metadata
+ */
 router.get('/', async (req, res) => {
-  const page = parseInt(req.query.page as string) || 1
-  const limit = parseInt(req.query.limit as string) || 10
+  // TODO: Implement paging & specifying categories, etc
+  const limit = parseInt(req.query.limit as string) || DEFAULT_LIMIT
+  const timeframe = parseInt(req.query.timeframe as string) || DEFAULT_TIMEFRAME
 
-  try {
-    const articles = await prisma.article.findMany({
-      take: limit,
-      orderBy: { created_at: 'desc' },
-    })
-    const total = await prisma.article.count()
-
-    res.json({
-      articles,
-      meta: {
-        page,
-        limit,
-        total,
-      },
-    })
-  } catch (error) {
-    res.status(500).json({ error: 'Failed to fetch articles' })
-  }
-})
-
-router.get('/:date', async (req, res) => {
-  const date = req.params.date
-  const page = parseInt(req.query.page as string) || 1
-  const limit = parseInt(req.query.limit as string) || 10
-
-  const start_date = new Date(date)
-  start_date.setHours(0, 0, 0, 0)
-  const end_date = new Date(date)
-  end_date.setHours(23, 59, 59, 59)
+  const endTime = dayjs.utc()
+  const startTime = endTime.subtract(timeframe, 'hour')
 
   try {
     const articles = await prisma.article.findMany({
       take: limit,
       where: {
         created_at: {
-          gte: start_date,
-          lte: end_date,
+          gte: startTime.toISOString(),
+          lte: endTime.toISOString(),
         },
       },
-      orderBy: { created_at: 'desc' },
+      orderBy: {
+        created_at: 'desc',
+      },
     })
-
-    const total = await prisma.article.count()
 
     res.json({
       articles,
       meta: {
-        page,
         limit,
-        total,
+        timeframe,
+        count: articles.length,
       },
     })
   } catch (error) {
-    res.status(500).json({ error: 'Failed to fetch articles' })
+    console.log('Failed to fetch articles:', error)
+    res.status(500).json({ error: 'Failed to fetch articles.' })
   }
 })
 
+/**
+ * Get a specific article by ID
+ * @route GET /api/news/:id
+ * @param {number} id - Article ID
+ * @returns {Object} Article object or error
+ */
 router.get('/:id', async (req, res) => {
-  const id = parseInt(req.params.id)
   try {
+    const id = parseInt(req.params.id)
+
+    if (isNaN(id)) {
+      return res.status(400).json({ error: 'Invalid Article ID' })
+    }
+
     const article = await prisma.article.findUnique({
-      where: {
-        id: id,
-      },
+      where: { id },
     })
 
     if (!article) {
@@ -80,35 +78,6 @@ router.get('/:id', async (req, res) => {
     res.json(article)
   } catch (error) {
     res.status(500).json({ error: 'Failed to fetch article' })
-  }
-})
-
-router.get('/search', async (req, res) => {
-  const { query } = req.query
-  const page = parseInt(req.query.page as string) || 1
-  const limit = parseInt(req.query.limit as string) || 10
-
-  try {
-    const articles = await prisma.article.findMany({
-      where: {
-        OR: [
-          { headline: { contains: query as string } },
-          { content: { contains: query as string } },
-          { one_line_summary: { contains: query as string } },
-        ],
-      },
-      take: limit,
-      skip: (page - 1) * limit,
-      orderBy: { created_at: 'desc' },
-    })
-
-    if (!articles) {
-      res.status(404).json({ error: { message: 'No articles found' } })
-    }
-
-    res.json(articles)
-  } catch (error) {
-    res.status(500).json({ error: 'Failed to fetch articles' })
   }
 })
 
