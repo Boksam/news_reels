@@ -8,20 +8,19 @@ class ApiService {
   ApiService({String? baseUrl}) : baseUrl = baseUrl ?? ApiConfig.baseUrl;
 
   Uri getUri(String endpoint, Map<String, dynamic>? queryParams) {
-    final uri = Uri.http(baseUrl, endpoint, queryParams);
-    // if (queryParams == null) return uri;
+    if (queryParams == null) return Uri.http(baseUrl, endpoint);
 
-    // uri.replace(
-    //     queryParameters:
-    //         queryParams.map((key, value) => MapEntry(key, value.toString())));
-    return uri;
+    final stringQueryParams =
+        queryParams.map((key, value) => MapEntry(key, value.toString()));
+
+    return Uri.http(baseUrl, endpoint, stringQueryParams);
   }
 
   /// Sends http request and returns [http.Reponse].
   Future<http.Response> get(
       String endpoint, Map<String, dynamic>? queryParams) async {
     final uri = getUri(endpoint, queryParams);
-    debugPrint("Sending request to: $uri");
+    debugPrint("Sending GET request to: $uri");
     return await http.get(uri);
   }
 }
