@@ -25,17 +25,25 @@ export class ArticleSummarizer {
     const escapedContent = content.replace(/\\/g, '\\\\').replace(/"/g, '\\"')
 
     return `
-      Please analyze the following article content and provide two summaries:
-        1. A detailed summary (around 500 characters)
-        2. A one-line summary
+      Please analyze this article and provide two summaries:
+      1. A detailed summary in Markdown format (less than 1,000 characters)
+      2. A concise one-line summary
+
+      For the Markdown summary:
+      - Start with an overview section
+      - Use a news-style format for remaining sections
+      - Include raw Markdown symbols (# for headers, etc.)
+      - Use emojis at the beginning of headers
+      - Don't use bullet points too much for better readability
 
       Article content: ${escapedContent}
 
-      Respond in the following JSON format, being careful to escape any quotes in the summaries:
+      Respond in this JSON format:
       {
         "oneLineSummary": "your one line summary here",
-        "fullSummary": "your detailed summary here"
-      }`
+        "summaryMd": "your Markdown summary here"
+      }
+    `
   }
 
   async summarize(content: string): Promise<ArticleSummary> {
@@ -50,6 +58,8 @@ export class ArticleSummarizer {
         throw new Error('Failed to summarize the article')
       }
       const summary = JSON.parse(summarizedMessage) as ArticleSummary
+
+      console.log(`summary: ${summary.summaryMd}`)
       return summary
     } catch (error) {
       console.error(error)

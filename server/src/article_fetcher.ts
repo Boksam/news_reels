@@ -58,8 +58,8 @@ export class NewsFetcher {
       data: {
         headline: fields?.headline || '',
         content,
-        full_summary: summary.fullSummary,
         one_line_summary: summary.oneLineSummary,
+        summary_md: summary.summaryMd,
         section: sectionId,
         type,
         thumbnail: fields?.thumbnail || '',
@@ -90,3 +90,6 @@ export class NewsFetcher {
     }
   }
 }
+
+const newsFetcher = new NewsFetcher()
+newsFetcher.fetchAndStore()
