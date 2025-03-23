@@ -4,8 +4,8 @@ class Article {
   final int id;
   final String? headline;
   final String? content;
-  final String? fullSummary;
   final String? oneLineSummary;
+  final String? summaryMd;
   final String? section;
   final String? type;
   final String? thumbnail;
@@ -18,8 +18,8 @@ class Article {
     required this.id,
     this.headline,
     this.content,
-    this.fullSummary,
     this.oneLineSummary,
+    this.summaryMd,
     this.section,
     this.type,
     this.thumbnail,
@@ -33,8 +33,8 @@ class Article {
       id: json['id'],
       headline: json['headline'],
       content: json['content'],
-      fullSummary: json['full_summary'],
       oneLineSummary: json['one_line_summary'],
+      summaryMd: json['summary_md'],
       section: json['section'],
       type: json['type'],
       thumbnail: getOriginalImageFromUrl(json['thumbnail']),
@@ -51,8 +51,8 @@ class Article {
         'id': id,
         'headline': headline,
         'content': content,
-        'full_summary': fullSummary,
         'one_line_summary': oneLineSummary,
+        'summary_md': summaryMd,
         'section': section,
         'type': type,
         'thumbnail': thumbnail,

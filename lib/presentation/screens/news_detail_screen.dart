@@ -1,5 +1,6 @@
 // news_detail_screen.dart
 import 'package:flutter/material.dart';
+import 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:news_reels/models/article.dart';
 import 'package:news_reels/presentation/styles/text_styles.dart';
 import 'package:news_reels/presentation/widgets/blurred_background_image.dart';
@@ -16,29 +17,13 @@ class NewsDetailScreen extends StatelessWidget {
       onSwipeRight: () => Navigator.pop(context),
       child: BlurredBackground(
         imageUrl: article.thumbnail ?? '',
-        child: SingleChildScrollView(
-          child: SafeArea(
-            child: Padding(
+        child: SafeArea(
+          child: Padding(
               padding: const EdgeInsets.all(16),
-              child: Column(
-                children: [
-                  Text(
-                    article.headline ?? 'Empty headline',
-                    style: NewsTextStyles.headline,
-                  ),
-                  const Divider(
-                    color: Colors.grey,
-                    thickness: 0.5,
-                    height: 32,
-                  ),
-                  Text(
-                    article.fullSummary ?? 'Empty full summary',
-                    style: NewsTextStyles.detailBody,
-                  ),
-                ],
-              ),
-            ),
-          ),
+              child: Markdown(
+                data: article.summaryMd ?? 'Empty summary',
+                styleSheet: NewsTextStyles.markdown,
+              )),
         ),
       ),
     );

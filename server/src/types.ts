@@ -20,5 +20,5 @@ export interface GuardianResponse {
 
 export interface ArticleSummary {
   oneLineSummary: string
-  fullSummary: string
+  summaryMd: string
 }
